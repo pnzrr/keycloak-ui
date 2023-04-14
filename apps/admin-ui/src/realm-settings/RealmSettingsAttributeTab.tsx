@@ -12,7 +12,7 @@ import { useAlerts } from "../components/alert/Alerts";
 import {
   AttributeForm,
   AttributesForm,
-} from "../components/key-value-form/AttributeForm";
+} from "../components/key-value-form-custom/AttributeForm";
 import {
   arrayToKeyValue,
   keyValueToArray,

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import {
   AttributeForm,
   AttributesForm,
-} from "../components/key-value-form/AttributeForm";
+} from "../components/key-value-form-custom/AttributeForm";
 import { OrgRepresentation } from "./routes";
 import { useForm } from "react-hook-form";
 import { arrayToKeyValue } from "../components/key-value-form/key-value-convert";
@@ -62,6 +62,7 @@ export default function OrgAttributes({ org }: OrgAttributesProps) {
         form={attributesForm}
         save={saveAttributes}
         reset={resetAttributes}
+        allowFullClear
       />
     </div>
   );

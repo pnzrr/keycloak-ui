@@ -16,6 +16,7 @@ export type AttributesFormProps = {
   save?: (model: AttributeForm) => void;
   reset?: () => void;
   fineGrainedAccess?: boolean;
+  allowFullClear?: boolean;
 };
 
 export const AttributesForm = ({
@@ -23,6 +24,7 @@ export const AttributesForm = ({
   reset,
   save,
   fineGrainedAccess,
+  allowFullClear,
 }: AttributesFormProps) => {
   const { t } = useTranslation("roles");
   const noSaveCancelButtons = !save && !reset;
@@ -38,7 +40,7 @@ export const AttributesForm = ({
       fineGrainedAccess={fineGrainedAccess}
     >
       <FormProvider {...form}>
-        <KeyValueInput name="attributes" />
+        <KeyValueInput name="attributes" allowFullClear={allowFullClear} />
       </FormProvider>
       {!noSaveCancelButtons && (
         <ActionGroup className="kc-attributes__action-group">

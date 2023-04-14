@@ -15,9 +15,10 @@ import { KeyValueType } from "./key-value-convert";
 
 type KeyValueInputProps = {
   name: string;
+  allowFullClear?: boolean;
 };
 
-export const KeyValueInput = ({ name }: KeyValueInputProps) => {
+export const KeyValueInput = ({ name, allowFullClear }: KeyValueInputProps) => {
   const { t } = useTranslation("common");
   const { control, register } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -86,7 +87,7 @@ export const KeyValueInput = ({ name }: KeyValueInputProps) => {
               <Button
                 variant="link"
                 title={t("removeAttribute")}
-                isDisabled={watchFields.length === 1}
+                isDisabled={allowFullClear ? false : watchFields.length === 1}
                 onClick={() => remove(index)}
                 data-testid={`${name}[${index}].remove`}
               >
