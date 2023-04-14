@@ -134,7 +134,7 @@ export const PortalStyles = () => {
 
     visibilityItems.map((pi) => {
       const pth = pi.replaceAll("_", ".");
-      let val = get(realmInfo?.attributes, `_providerConfig.${pth}`, false);
+      let val = get(realmInfo?.attributes, `_providerConfig.${pth}`, true);
       if (val === "true") val = true;
       if (val === "false") val = false;
       setValue(pi, val);
@@ -403,7 +403,6 @@ export const PortalStyles = () => {
 
         {/*   Profile */}
         <h4 className="pf-c-title pf-m-lg">{t("profile")}</h4>
-
         {visiblityProfileItems.map((i) => (
           <Controller
             name={i}
@@ -418,6 +417,7 @@ export const PortalStyles = () => {
             )}
           />
         ))}
+
         {/*   Organizations */}
         <h4 className="pf-c-title pf-m-lg">{t("organizations")}</h4>
         {visiblityOrganizationItems.map((i) => (
