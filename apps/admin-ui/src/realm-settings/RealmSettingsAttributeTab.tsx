@@ -91,6 +91,7 @@ export const RealmSettingsAttributeTab = ({
               attributes: convertAttributes(),
             })
           }
+          allowFullClear
         />
       </div>
     </PageSection>
