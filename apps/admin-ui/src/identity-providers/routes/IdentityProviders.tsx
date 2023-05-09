@@ -1,15 +1,21 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type IdentityProvidersParams = { realm: string };
 
-export const IdentityProvidersRoute: RouteDef = {
+const IdentityProvidersSection = lazy(
+  () => import("../IdentityProvidersSection")
+);
+
+export const IdentityProvidersRoute: AppRouteObject = {
   path: "/:realm/identity-providers",
-  component: lazy(() => import("../IdentityProvidersSection")),
+  element: <IdentityProvidersSection />,
   breadcrumb: (t) => t("identityProviders"),
-  access: "view-identity-providers",
+  handle: {
+    access: "view-identity-providers",
+  },
 };
 
 export const toIdentityProviders = (

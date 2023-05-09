@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type IdentityProviderTab = "settings" | "mappers" | "permissions";
 
@@ -12,11 +12,15 @@ export type IdentityProviderParams = {
   tab: IdentityProviderTab;
 };
 
-export const IdentityProviderRoute: RouteDef = {
+const DetailSettings = lazy(() => import("../add/DetailSettings"));
+
+export const IdentityProviderRoute: AppRouteObject = {
   path: "/:realm/identity-providers/:providerId/:alias/:tab",
-  component: lazy(() => import("../add/DetailSettings")),
+  element: <DetailSettings />,
   breadcrumb: (t) => t("identity-providers:providerDetails"),
-  access: "view-identity-providers",
+  handle: {
+    access: "view-identity-providers",
+  },
 };
 
 export const toIdentityProvider = (
