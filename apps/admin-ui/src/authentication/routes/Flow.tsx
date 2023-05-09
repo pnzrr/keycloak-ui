@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type FlowParams = {
   realm: string;
@@ -10,14 +10,18 @@ export type FlowParams = {
   builtIn?: string;
 };
 
-export const FlowRoute: RouteDef = {
+const FlowDetails = lazy(() => import("../FlowDetails"));
+
+export const FlowRoute: AppRouteObject = {
   path: "/:realm/authentication/:id/:usedBy",
-  component: lazy(() => import("../FlowDetails")),
+  element: <FlowDetails />,
   breadcrumb: (t) => t("authentication:flowDetails"),
-  access: "view-authorization",
+  handle: {
+    access: "view-authorization",
+  },
 };
 
-export const FlowWithBuiltInRoute: RouteDef = {
+export const FlowWithBuiltInRoute: AppRouteObject = {
   ...FlowRoute,
   path: "/:realm/authentication/:id/:usedBy/:builtIn",
 };

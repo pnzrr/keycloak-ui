@@ -1,20 +1,24 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type AuthenticationTab = "flows" | "required-actions" | "policies";
 
 export type AuthenticationParams = { realm: string; tab?: AuthenticationTab };
 
-export const AuthenticationRoute: RouteDef = {
+const AuthenticationSection = lazy(() => import("../AuthenticationSection"));
+
+export const AuthenticationRoute: AppRouteObject = {
   path: "/:realm/authentication",
-  component: lazy(() => import("../AuthenticationSection")),
+  element: <AuthenticationSection />,
   breadcrumb: (t) => t("authentication"),
-  access: ["view-realm", "view-identity-providers", "view-clients"],
+  handle: {
+    access: ["view-realm", "view-identity-providers", "view-clients"],
+  },
 };
 
-export const AuthenticationRouteWithTab: RouteDef = {
+export const AuthenticationRouteWithTab: AppRouteObject = {
   ...AuthenticationRoute,
   path: "/:realm/authentication/:tab",
 };
