@@ -39,3 +39,7 @@ server
 dist
 dist-ssr
 *.local
+
+# Distribution
+*.tgz
+npm-dist
