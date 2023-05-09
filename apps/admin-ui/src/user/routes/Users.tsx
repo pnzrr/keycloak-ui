@@ -1,20 +1,24 @@
 import { lazy } from "react";
 import { generatePath } from "react-router-dom";
 import type { Path } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type UserTab = "list" | "permissions";
 
 export type UsersParams = { realm: string; tab?: UserTab };
 
-export const UsersRoute: RouteDef = {
+const UsersSection = lazy(() => import("../UsersSection"));
+
+export const UsersRoute: AppRouteObject = {
   path: "/:realm/users",
-  component: lazy(() => import("../UsersSection")),
+  element: <UsersSection />,
   breadcrumb: (t) => t("users:title"),
-  access: "query-users",
+  handle: {
+    access: "query-users",
+  },
 };
 
-export const UsersRouteWithTab: RouteDef = {
+export const UsersRouteWithTab: AppRouteObject = {
   ...UsersRoute,
   path: "/:realm/users/:tab",
 };
