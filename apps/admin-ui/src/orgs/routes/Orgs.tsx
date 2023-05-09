@@ -1,16 +1,20 @@
 import { lazy } from "react";
 import { generatePath, Path } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type OrgsParams = {
   realm: string;
 };
 
-export const OrgsRoute: RouteDef = {
+const OrgsSection = lazy(() => import("../OrgsSection"));
+
+export const OrgsRoute: AppRouteObject = {
   path: "/:realm/organizations",
-  component: lazy(() => import("../OrgsSection")),
+  element: <OrgsSection />,
   breadcrumb: (t) => t("orgs:orgList"),
-  access: "query-clients",
+  handle: {
+    access: "query-clients",
+  },
 };
 
 export const toOrgs = (params: OrgsParams): Partial<Path> => ({

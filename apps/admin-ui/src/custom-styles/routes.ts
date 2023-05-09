@@ -1,6 +1,6 @@
-import type { RouteDef } from "../route-config";
+import type { AppRouteObject } from "../routes";
 import { StylesRoute, StylesRouteWithTab } from "./routes/Styles";
 
-const routes: RouteDef[] = [StylesRoute, StylesRouteWithTab];
+const routes: AppRouteObject[] = [StylesRoute, StylesRouteWithTab];
 
 export default routes;

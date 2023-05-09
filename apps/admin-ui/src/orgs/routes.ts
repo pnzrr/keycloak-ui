@@ -1,4 +1,5 @@
-import type { RouteDef } from "../route-config";
+import type { AppRouteObject } from "../routes";
+
 import { OrgsRoute } from "./routes/Orgs";
 import { OrgRoute } from "./routes/Org";
 
@@ -11,6 +12,6 @@ export type OrgRepresentation = {
   attributes: any;
 };
 
-const routes: RouteDef[] = [OrgsRoute, OrgRoute];
+const routes: AppRouteObject[] = [OrgsRoute, OrgRoute];
 
 export default routes;

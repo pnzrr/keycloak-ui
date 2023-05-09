@@ -20,6 +20,8 @@ import realmRoutes from "./realm/routes";
 import sessionRoutes from "./sessions/routes";
 import userFederationRoutes from "./user-federation/routes";
 import userRoutes from "./user/routes";
+import orgRoutes from "./orgs/routes";
+import stylesRoutes from "./custom-styles/routes";
 
 export type AppRouteObjectHandle = {
   access: AccessType | AccessType[];
@@ -54,6 +56,8 @@ export const routes: AppRouteObject[] = [
   ...groupsRoutes,
   ...dashboardRoutes,
   NotFoundRoute,
+  ...orgRoutes,
+  ...stylesRoutes,
 ];
 
 const { keycloak, adminClient } = await initAdminClient();

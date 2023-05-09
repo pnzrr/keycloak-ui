@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 import type { Path } from "react-router-dom";
 
 export type StylesTab = "general" | "login" | "email" | "portal";
@@ -10,14 +10,18 @@ export type StylesParams = {
   tab?: StylesTab;
 };
 
-export const StylesRoute: RouteDef = {
+const StylesSection = lazy(() => import("../StylesSection"));
+
+export const StylesRoute: AppRouteObject = {
   path: "/:realm/styles",
-  component: lazy(() => import("../StylesSection")),
+  element: <StylesSection />,
+  handle: {
+    access: "query-clients",
+  },
   breadcrumb: (t) => t("styles"),
-  access: "query-clients",
 };
 
-export const StylesRouteWithTab: RouteDef = {
+export const StylesRouteWithTab: AppRouteObject = {
   ...StylesRoute,
   path: "/:realm/styles/:tab",
 };

@@ -55,7 +55,7 @@ const LeftNav = ({ title, path }: LeftNavProps) => {
 
 export const PageNav = () => {
   const { t } = useTranslation("common");
-  const { hasSomeAccess } = useAccess();
+  const { hasSomeAccess, hasSomeAccessByString } = useAccess();
 
   const navigate = useNavigate();
 
@@ -83,6 +83,11 @@ export const PageNav = () => {
     "view-realm",
     "query-clients",
     "view-identity-providers"
+  );
+
+  const showOrgs = hasSomeAccessByString(
+    "view-organizations",
+    "manage-organizations"
   );
 
   const isOnAddRealm = !!useMatch(AddRealmRoute.path);
@@ -116,6 +121,14 @@ export const PageNav = () => {
               <LeftNav title="authentication" path="/authentication" />
               <LeftNav title="identityProviders" path="/identity-providers" />
               <LeftNav title="userFederation" path="/user-federation" />
+            </NavGroup>
+          )}
+          {!isOnAddRealm && (
+            <NavGroup aria-label={t("extensions")} title={t("extensions")}>
+              {showOrgs && (
+                <LeftNav title="Organizations" path="/organizations" />
+              )}
+              <LeftNav title="Styles" path="/styles" />
             </NavGroup>
           )}
         </Nav>
