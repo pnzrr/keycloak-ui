@@ -1,18 +1,24 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type NewClientPolicyConditionParams = {
   realm: string;
   policyName: string;
 };
 
-export const NewClientPolicyConditionRoute: RouteDef = {
+const NewClientPolicyCondition = lazy(
+  () => import("../NewClientPolicyCondition")
+);
+
+export const NewClientPolicyConditionRoute: AppRouteObject = {
   path: "/:realm/realm-settings/client-policies/:policyName/edit-policy/create-condition",
-  component: lazy(() => import("../NewClientPolicyCondition")),
+  element: <NewClientPolicyCondition />,
   breadcrumb: (t) => t("realm-settings:addCondition"),
-  access: "manage-clients",
+  handle: {
+    access: "manage-clients",
+  },
 };
 
 export const toNewClientPolicyCondition = (

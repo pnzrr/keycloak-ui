@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { useAlerts } from "../components/alert/Alerts";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";
 import type { KeyValueType } from "../components/key-value-form/key-value-convert";
-import { RealmSettingsAttributeTab } from "./RealmSettingsAttributeTab";
 import {
   RoutableTabs,
   useRoutableTab,
@@ -49,6 +48,7 @@ import { RealmSettingsThemesTab } from "./ThemesTab";
 import { RealmSettingsTokensTab } from "./TokensTab";
 import { UserProfileTab } from "./user-profile/UserProfileTab";
 import { UserRegistration } from "./UserRegistration";
+import { useServerInfo } from "../context/server-info/ServerInfoProvider";
 
 type RealmSettingsHeaderProps = {
   onChange: (value: boolean) => void;
@@ -237,9 +237,10 @@ export const RealmSettingsTabs = ({
   const sessionsTab = useTab("sessions");
   const tokensTab = useTab("tokens");
   const clientPoliciesTab = useTab("client-policies");
+  const clientPoliciesDisabled =
+    useServerInfo().profileInfo?.disabledFeatures?.includes("CLIENT_POLICIES");
   const userProfileTab = useTab("user-profile");
   const userRegistrationTab = useTab("user-registration");
-  const attributesTab = useTab("attributes");
 
   const useClientPoliciesTab = (tab: ClientPoliciesTab) =>
     useRoutableTab(
@@ -352,50 +353,58 @@ export const RealmSettingsTabs = ({
           >
             <RealmSettingsTokensTab save={save} realm={realm} />
           </Tab>
-          <Tab
-            title={
-              <TabTitleText>{t("realm-settings:clientPolicies")}</TabTitleText>
-            }
-            data-testid="rs-clientPolicies-tab"
-            {...clientPoliciesTab}
-          >
-            <RoutableTabs
-              mountOnEnter
-              defaultLocation={toClientPolicies({
-                realm: realmName,
-                tab: "profiles",
-              })}
+          {!clientPoliciesDisabled && (
+            <Tab
+              title={
+                <TabTitleText>
+                  {t("realm-settings:clientPolicies")}
+                </TabTitleText>
+              }
+              data-testid="rs-clientPolicies-tab"
+              {...clientPoliciesTab}
             >
-              <Tab
-                id="profiles"
-                data-testid="rs-policies-clientProfiles-tab"
-                aria-label={t("clientProfilesSubTab")}
-                title={<TabTitleText>{t("profiles")}</TabTitleText>}
-                tooltip={
-                  <Tooltip
-                    content={t("realm-settings:clientPoliciesProfilesHelpText")}
-                  />
-                }
-                {...clientPoliciesProfilesTab}
+              <RoutableTabs
+                mountOnEnter
+                defaultLocation={toClientPolicies({
+                  realm: realmName,
+                  tab: "profiles",
+                })}
               >
-                <ProfilesTab />
-              </Tab>
-              <Tab
-                id="policies"
-                data-testid="rs-policies-clientPolicies-tab"
-                aria-label={t("clientPoliciesSubTab")}
-                {...clientPoliciesPoliciesTab}
-                title={<TabTitleText>{t("policies")}</TabTitleText>}
-                tooltip={
-                  <Tooltip
-                    content={t("realm-settings:clientPoliciesPoliciesHelpText")}
-                  />
-                }
-              >
-                <PoliciesTab />
-              </Tab>
-            </RoutableTabs>
-          </Tab>
+                <Tab
+                  id="profiles"
+                  data-testid="rs-policies-clientProfiles-tab"
+                  aria-label={t("clientProfilesSubTab")}
+                  title={<TabTitleText>{t("profiles")}</TabTitleText>}
+                  tooltip={
+                    <Tooltip
+                      content={t(
+                        "realm-settings:clientPoliciesProfilesHelpText"
+                      )}
+                    />
+                  }
+                  {...clientPoliciesProfilesTab}
+                >
+                  <ProfilesTab />
+                </Tab>
+                <Tab
+                  id="policies"
+                  data-testid="rs-policies-clientPolicies-tab"
+                  aria-label={t("clientPoliciesSubTab")}
+                  {...clientPoliciesPoliciesTab}
+                  title={<TabTitleText>{t("policies")}</TabTitleText>}
+                  tooltip={
+                    <Tooltip
+                      content={t(
+                        "realm-settings:clientPoliciesPoliciesHelpText"
+                      )}
+                    />
+                  }
+                >
+                  <PoliciesTab />
+                </Tab>
+              </RoutableTabs>
+            </Tab>
+          )}
           {isFeatureEnabled(Feature.DeclarativeUserProfile) &&
             realm.attributes?.userProfileEnabled === "true" && (
               <Tab
@@ -414,13 +423,6 @@ export const RealmSettingsTabs = ({
             {...userRegistrationTab}
           >
             <UserRegistration />
-          </Tab>
-          <Tab
-            title={<TabTitleText>{t("attributes")}</TabTitleText>}
-            data-testid="rs-realm-attributes-tab"
-            {...attributesTab}
-          >
-            <RealmSettingsAttributeTab realm={realm} />
           </Tab>
         </RoutableTabs>
       </PageSection>

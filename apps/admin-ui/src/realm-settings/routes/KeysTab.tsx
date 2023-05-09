@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type KeySubTab = "list" | "providers";
 
@@ -10,11 +10,15 @@ export type KeysParams = {
   tab: KeySubTab;
 };
 
-export const KeysRoute: RouteDef = {
+const RealmSettingsSection = lazy(() => import("../RealmSettingsSection"));
+
+export const KeysRoute: AppRouteObject = {
   path: "/:realm/realm-settings/keys/:tab",
-  component: lazy(() => import("../RealmSettingsSection")),
+  element: <RealmSettingsSection />,
   breadcrumb: (t) => t("realm-settings:keys"),
-  access: "view-realm",
+  handle: {
+    access: "view-realm",
+  },
 };
 
 export const toKeysTab = (params: KeysParams): Partial<Path> => ({

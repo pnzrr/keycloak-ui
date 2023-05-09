@@ -1,18 +1,24 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type EditAttributesGroupParams = {
   realm: string;
   name: string;
 };
 
-export const EditAttributesGroupRoute: RouteDef = {
+const AttributesGroupDetails = lazy(
+  () => import("../user-profile/AttributesGroupDetails")
+);
+
+export const EditAttributesGroupRoute: AppRouteObject = {
   path: "/:realm/realm-settings/user-profile/attributesGroup/edit/:name",
-  component: lazy(() => import("../user-profile/AttributesGroupDetails")),
+  element: <AttributesGroupDetails />,
   breadcrumb: (t) => t("realm-settings:editGroupText"),
-  access: "view-realm",
+  handle: {
+    access: "view-realm",
+  },
 };
 
 export const toEditAttributesGroup = (

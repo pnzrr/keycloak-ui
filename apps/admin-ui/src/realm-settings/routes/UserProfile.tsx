@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type UserProfileTab = "attributes" | "attributes-group" | "json-editor";
 
@@ -10,11 +10,15 @@ export type UserProfileParams = {
   tab: UserProfileTab;
 };
 
-export const UserProfileRoute: RouteDef = {
+const RealmSettingsSection = lazy(() => import("../RealmSettingsSection"));
+
+export const UserProfileRoute: AppRouteObject = {
   path: "/:realm/realm-settings/user-profile/:tab",
-  component: lazy(() => import("../RealmSettingsSection")),
+  element: <RealmSettingsSection />,
   breadcrumb: (t) => t("realm-settings:userProfile"),
-  access: "view-realm",
+  handle: {
+    access: "view-realm",
+  },
 };
 
 export const toUserProfile = (params: UserProfileParams): Partial<Path> => ({

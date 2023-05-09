@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type RealmSettingsTab =
   | "general"
@@ -16,22 +16,25 @@ export type RealmSettingsTab =
   | "tokens"
   | "client-policies"
   | "user-profile"
-  | "user-registration"
-  | "attributes";
+  | "user-registration";
 
 export type RealmSettingsParams = {
   realm: string;
   tab?: RealmSettingsTab;
 };
 
-export const RealmSettingsRoute: RouteDef = {
+const RealmSettingsSection = lazy(() => import("../RealmSettingsSection"));
+
+export const RealmSettingsRoute: AppRouteObject = {
   path: "/:realm/realm-settings",
-  component: lazy(() => import("../RealmSettingsSection")),
+  element: <RealmSettingsSection />,
   breadcrumb: (t) => t("realmSettings"),
-  access: "view-realm",
+  handle: {
+    access: "view-realm",
+  },
 };
 
-export const RealmSettingsRouteWithTab: RouteDef = {
+export const RealmSettingsRouteWithTab: AppRouteObject = {
   ...RealmSettingsRoute,
   path: "/:realm/realm-settings/:tab",
 };
