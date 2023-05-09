@@ -6,6 +6,7 @@ import {
   CredentialContainer,
   CredentialRepresentation,
   DeviceRepresentation,
+  Group,
   LinkedAccountRepresentation,
   Permission,
   UserRepresentation,
@@ -24,8 +25,19 @@ export type PaginationParams = {
 export async function getPersonalInfo({
   signal,
 }: CallOptions = {}): Promise<UserRepresentation> {
-  const response = await request("/", { signal });
+  const response = await request("/?userProfileMetadata=true", { signal });
   return parseResponse<UserRepresentation>(response);
+}
+
+export async function savePersonalInfo(
+  info: UserRepresentation
+): Promise<void> {
+  const response = await request("/", { body: info, method: "POST" });
+  if (!response.ok) {
+    const { errors } = await response.json();
+    throw errors;
+  }
+  return undefined;
 }
 
 export async function getPermissionRequests(
@@ -102,4 +114,11 @@ export async function linkAccount(account: LinkedAccountRepresentation) {
     searchParams: { providerId: account.providerName, redirectUri },
   });
   return parseResponse<{ accountLinkUri: string }>(response);
+}
+
+export async function getGroups({ signal }: CallOptions) {
+  const response = await request("/groups", {
+    signal,
+  });
+  return parseResponse<Group[]>(response);
 }

@@ -59,9 +59,9 @@ const Applications = () => {
     try {
       await deleteConsent(id);
       refresh();
-      addAlert("removeConsentSuccess");
+      addAlert(t("removeConsentSuccess"));
     } catch (error) {
-      addError("removeConsentError", error);
+      addError(t("removeConsentError", { error }).toString());
     }
   };
 
@@ -185,7 +185,9 @@ const Applications = () => {
                 {application.consent && (
                   <>
                     <DescriptionListGroup>
-                      <DescriptionListTerm>Has access to</DescriptionListTerm>
+                      <DescriptionListTerm>
+                        {t("hasAccessTo")}
+                      </DescriptionListTerm>
                       {application.consent.grantedScopes.map((scope) => (
                         <DescriptionListDescription key={`scope${scope.id}`}>
                           <CheckIcon /> {t(scope.name as TFuncKey)}
