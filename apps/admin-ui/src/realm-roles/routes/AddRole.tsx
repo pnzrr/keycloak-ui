@@ -1,15 +1,19 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type AddRoleParams = { realm: string };
 
-export const AddRoleRoute: RouteDef = {
+const CreateRealmRole = lazy(() => import("../CreateRealmRole"));
+
+export const AddRoleRoute: AppRouteObject = {
   path: "/:realm/roles/new",
-  component: lazy(() => import("../CreateRealmRole")),
+  element: <CreateRealmRole />,
   breadcrumb: (t) => t("roles:createRole"),
-  access: "manage-realm",
+  handle: {
+    access: "manage-realm",
+  },
 };
 
 export const toAddRole = (params: AddRoleParams): Partial<Path> => ({

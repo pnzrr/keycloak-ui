@@ -2,7 +2,7 @@ import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
 
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type RealmRoleTab =
   | "details"
@@ -17,11 +17,15 @@ export type RealmRoleParams = {
   tab: RealmRoleTab;
 };
 
-export const RealmRoleRoute: RouteDef = {
+const RealmRoleTabs = lazy(() => import("../RealmRoleTabs"));
+
+export const RealmRoleRoute: AppRouteObject = {
   path: "/:realm/roles/:id/:tab",
-  component: lazy(() => import("../RealmRoleTabs")),
+  element: <RealmRoleTabs />,
   breadcrumb: (t) => t("roles:roleDetails"),
-  access: ["view-realm", "view-users"],
+  handle: {
+    access: ["view-realm", "view-users"],
+  },
 };
 
 export const toRealmRole = (params: RealmRoleParams): Partial<Path> => ({
