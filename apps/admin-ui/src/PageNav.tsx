@@ -14,7 +14,7 @@ import { RealmSelector } from "./components/realm-selector/RealmSelector";
 import { useAccess } from "./context/access/Access";
 import { useRealm } from "./context/realm-context/RealmContext";
 import { AddRealmRoute } from "./realm/routes/AddRealm";
-import { routes } from "./route-config";
+import { routes } from "./routes";
 
 import "./page-nav.css";
 
@@ -30,9 +30,9 @@ const LeftNav = ({ title, path }: LeftNavProps) => {
 
   const accessAllowed =
     route &&
-    (route.access instanceof Array
-      ? hasAccess(...route.access)
-      : hasAccess(route.access));
+    (route.handle.access instanceof Array
+      ? hasAccess(...route.handle.access)
+      : hasAccess(route.handle.access));
 
   if (!accessAllowed) {
     return null;
@@ -55,7 +55,7 @@ const LeftNav = ({ title, path }: LeftNavProps) => {
 
 export const PageNav = () => {
   const { t } = useTranslation("common");
-  const { hasSomeAccess, hasSomeAccessByString } = useAccess();
+  const { hasSomeAccess } = useAccess();
 
   const navigate = useNavigate();
 
@@ -83,11 +83,6 @@ export const PageNav = () => {
     "view-realm",
     "query-clients",
     "view-identity-providers"
-  );
-
-  const showOrgs = hasSomeAccessByString(
-    "view-organizations",
-    "manage-organizations"
   );
 
   const isOnAddRealm = !!useMatch(AddRealmRoute.path);
@@ -121,14 +116,6 @@ export const PageNav = () => {
               <LeftNav title="authentication" path="/authentication" />
               <LeftNav title="identityProviders" path="/identity-providers" />
               <LeftNav title="userFederation" path="/user-federation" />
-            </NavGroup>
-          )}
-          {!isOnAddRealm && (
-            <NavGroup aria-label={t("extensions")} title={t("extensions")}>
-              {showOrgs && (
-                <LeftNav title="Organizations" path="/organizations" />
-              )}
-              <LeftNav title="Styles" path="/styles" />
             </NavGroup>
           )}
         </Nav>
