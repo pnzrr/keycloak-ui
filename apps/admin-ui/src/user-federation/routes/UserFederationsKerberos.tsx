@@ -1,14 +1,18 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type UserFederationsKerberosParams = { realm: string };
 
-export const UserFederationsKerberosRoute: RouteDef = {
+const UserFederationSection = lazy(() => import("../UserFederationSection"));
+
+export const UserFederationsKerberosRoute: AppRouteObject = {
   path: "/:realm/user-federation/kerberos",
-  component: lazy(() => import("../UserFederationSection")),
-  access: "view-realm",
+  element: <UserFederationSection />,
+  handle: {
+    access: "view-realm",
+  },
 };
 
 export const toUserFederationsKerberos = (

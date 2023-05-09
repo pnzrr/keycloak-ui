@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type UserFederationLdapMapperParams = {
   realm: string;
@@ -9,11 +9,17 @@ export type UserFederationLdapMapperParams = {
   mapperId: string;
 };
 
-export const UserFederationLdapMapperRoute: RouteDef = {
+const LdapMapperDetails = lazy(
+  () => import("../ldap/mappers/LdapMapperDetails")
+);
+
+export const UserFederationLdapMapperRoute: AppRouteObject = {
   path: "/:realm/user-federation/ldap/:id/mappers/:mapperId",
-  component: lazy(() => import("../ldap/mappers/LdapMapperDetails")),
+  element: <LdapMapperDetails />,
   breadcrumb: (t) => t("common:mappingDetails"),
-  access: "view-realm",
+  handle: {
+    access: "view-realm",
+  },
 };
 
 export const toUserFederationLdapMapper = (

@@ -1,16 +1,22 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type NewLdapUserFederationParams = { realm: string };
 
-export const NewLdapUserFederationRoute: RouteDef = {
+const CreateUserFederationLdapSettings = lazy(
+  () => import("../CreateUserFederationLdapSettings")
+);
+
+export const NewLdapUserFederationRoute: AppRouteObject = {
   path: "/:realm/user-federation/ldap/new",
-  component: lazy(() => import("../CreateUserFederationLdapSettings")),
+  element: <CreateUserFederationLdapSettings />,
   breadcrumb: (t) =>
     t("user-federation:addProvider", { provider: "LDAP", count: 1 }),
-  access: "view-realm",
+  handle: {
+    access: "view-realm",
+  },
 };
 
 export const toNewLdapUserFederation = (
