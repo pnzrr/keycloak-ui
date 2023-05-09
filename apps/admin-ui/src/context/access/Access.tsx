@@ -2,13 +2,11 @@ import type { AccessType } from "@keycloak/keycloak-admin-client/lib/defs/whoAmI
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useRealm } from "../../context/realm-context/RealmContext";
 import { useWhoAmI } from "../../context/whoami/WhoAmI";
-import { createNamedContext } from "../../utils/createNamedContext";
-import useRequiredContext from "../../utils/useRequiredContext";
+import { createNamedContext, useRequiredContext } from "ui-shared";
 
 type AccessContextProps = {
   hasAccess: (...types: AccessType[]) => boolean;
   hasSomeAccess: (...types: AccessType[]) => boolean;
-  hasSomeAccessByString: (...types: string[]) => boolean;
 };
 
 export const AccessContext = createNamedContext<AccessContextProps | undefined>(
@@ -37,14 +35,8 @@ export const AccessContextProvider = ({ children }: PropsWithChildren) => {
     return types.some((type) => type === "anyone" || access.includes(type));
   };
 
-  const hasSomeAccessByString = (...types: string[]) => {
-    return types.some((type) => type === "anyone" || access.filter(a => {
-      return a.toString() === type;
-    }).length > 0);
-  };
-
   return (
-    <AccessContext.Provider value={{ hasAccess, hasSomeAccess, hasSomeAccessByString }}>
+    <AccessContext.Provider value={{ hasAccess, hasSomeAccess }}>
       {children}
     </AccessContext.Provider>
   );
