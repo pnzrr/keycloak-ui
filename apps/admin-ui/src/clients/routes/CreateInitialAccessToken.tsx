@@ -1,15 +1,21 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type CreateInitialAccessTokenParams = { realm: string };
 
-export const CreateInitialAccessTokenRoute: RouteDef = {
+const CreateInitialAccessToken = lazy(
+  () => import("../initial-access/CreateInitialAccessToken")
+);
+
+export const CreateInitialAccessTokenRoute: AppRouteObject = {
   path: "/:realm/clients/initialAccessToken/create",
-  component: lazy(() => import("../initial-access/CreateInitialAccessToken")),
+  element: <CreateInitialAccessToken />,
   breadcrumb: (t) => t("clients:createToken"),
-  access: "manage-clients",
+  handle: {
+    access: "manage-clients",
+  },
 };
 
 export const toCreateInitialAccessToken = (

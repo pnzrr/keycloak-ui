@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type ClientRegistrationTab = "anonymous" | "authenticated";
 
@@ -10,11 +10,15 @@ export type ClientRegistrationParams = {
   subTab: ClientRegistrationTab;
 };
 
-export const ClientRegistrationRoute: RouteDef = {
+const ClientsSection = lazy(() => import("../ClientsSection"));
+
+export const ClientRegistrationRoute: AppRouteObject = {
   path: "/:realm/clients/client-registration/:subTab",
-  component: lazy(() => import("../ClientsSection")),
+  element: <ClientsSection />,
   breadcrumb: (t) => t("clients:clientRegistration"),
-  access: "view-clients",
+  handle: {
+    access: "view-clients",
+  },
 };
 
 export const toClientRegistration = (

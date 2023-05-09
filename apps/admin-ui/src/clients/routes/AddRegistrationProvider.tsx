@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 import { ClientRegistrationTab } from "./ClientRegistration";
 
 export type RegistrationProviderParams = {
@@ -11,14 +11,18 @@ export type RegistrationProviderParams = {
   providerId: string;
 };
 
-export const AddRegistrationProviderRoute: RouteDef = {
+const DetailProvider = lazy(() => import("../registration/DetailProvider"));
+
+export const AddRegistrationProviderRoute: AppRouteObject = {
   path: "/:realm/clients/client-registration/:subTab/:providerId",
-  component: lazy(() => import("../registration/DetailProvider")),
+  element: <DetailProvider />,
   breadcrumb: (t) => t("clients:clientSettings"),
-  access: "manage-clients",
+  handle: {
+    access: "manage-clients",
+  },
 };
 
-export const EditRegistrationProviderRoute: RouteDef = {
+export const EditRegistrationProviderRoute: AppRouteObject = {
   ...AddRegistrationProviderRoute,
   path: "/:realm/clients/client-registration/:subTab/:providerId/:id",
 };

@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type MapperParams = {
   realm: string;
@@ -9,11 +9,15 @@ export type MapperParams = {
   mapperId: string;
 };
 
-export const MapperRoute: RouteDef = {
-  path: "/:realm/clients/:id/clientScopes/dedicated/mappers/:mapperId",
-  component: lazy(() => import("../../client-scopes/details/MappingDetails")),
+const MappingDetails = lazy(() => import("../details/MappingDetails"));
+
+export const MapperRoute: AppRouteObject = {
+  path: "/:realm/client-scopes/:id/mappers/:mapperId",
+  element: <MappingDetails />,
   breadcrumb: (t) => t("common:mappingDetails"),
-  access: "view-clients",
+  handle: {
+    access: "view-clients",
+  },
 };
 
 export const toMapper = (params: MapperParams): Partial<Path> => ({

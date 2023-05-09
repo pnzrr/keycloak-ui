@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 import type { PermissionType } from "./NewPermission";
 
 export type PermissionDetailsParams = {
@@ -11,11 +11,17 @@ export type PermissionDetailsParams = {
   permissionId: string;
 };
 
-export const PermissionDetailsRoute: RouteDef = {
+const PermissionDetails = lazy(
+  () => import("../authorization/PermissionDetails")
+);
+
+export const PermissionDetailsRoute: AppRouteObject = {
   path: "/:realm/clients/:id/authorization/permission/:permissionType/:permissionId",
-  component: lazy(() => import("../authorization/PermissionDetails")),
+  element: <PermissionDetails />,
   breadcrumb: (t) => t("clients:permissionDetails"),
-  access: "view-clients",
+  handle: {
+    access: "view-clients",
+  },
 };
 
 export const toPermissionDetails = (

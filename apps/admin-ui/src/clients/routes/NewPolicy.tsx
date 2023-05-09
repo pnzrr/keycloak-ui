@@ -1,15 +1,21 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type NewPolicyParams = { realm: string; id: string; policyType: string };
 
-export const NewPolicyRoute: RouteDef = {
+const PolicyDetails = lazy(
+  () => import("../authorization/policy/PolicyDetails")
+);
+
+export const NewPolicyRoute: AppRouteObject = {
   path: "/:realm/clients/:id/authorization/policy/new/:policyType",
-  component: lazy(() => import("../authorization/policy/PolicyDetails")),
+  element: <PolicyDetails />,
   breadcrumb: (t) => t("clients:createPolicy"),
-  access: "view-clients",
+  handle: {
+    access: "view-clients",
+  },
 };
 
 export const toCreatePolicy = (params: NewPolicyParams): Partial<Path> => ({

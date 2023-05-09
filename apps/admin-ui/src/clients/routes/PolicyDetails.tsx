@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type PolicyDetailsParams = {
   realm: string;
@@ -10,11 +10,17 @@ export type PolicyDetailsParams = {
   policyType: string;
 };
 
-export const PolicyDetailsRoute: RouteDef = {
+const PolicyDetails = lazy(
+  () => import("../authorization/policy/PolicyDetails")
+);
+
+export const PolicyDetailsRoute: AppRouteObject = {
   path: "/:realm/clients/:id/authorization/policy/:policyId/:policyType",
-  component: lazy(() => import("../authorization/policy/PolicyDetails")),
-  breadcrumb: (t) => t("clients:createPolicy"),
-  access: "view-clients",
+  element: <PolicyDetails />,
+  breadcrumb: (t) => t("clients:policyDetails"),
+  handle: {
+    access: "view-clients",
+  },
 };
 
 export const toPolicyDetails = (

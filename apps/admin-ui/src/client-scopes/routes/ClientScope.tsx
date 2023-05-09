@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type ClientScopeTab = "settings" | "mappers" | "scope";
 
@@ -11,11 +11,15 @@ export type ClientScopeParams = {
   tab: ClientScopeTab;
 };
 
-export const ClientScopeRoute: RouteDef = {
+const EditClientScope = lazy(() => import("../EditClientScope"));
+
+export const ClientScopeRoute: AppRouteObject = {
   path: "/:realm/client-scopes/:id/:tab",
-  component: lazy(() => import("../EditClientScope")),
+  element: <EditClientScope />,
   breadcrumb: (t) => t("client-scopes:clientScopeDetails"),
-  access: "view-clients",
+  handle: {
+    access: "view-clients",
+  },
 };
 
 export const toClientScope = (params: ClientScopeParams): Partial<Path> => {
