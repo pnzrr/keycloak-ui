@@ -13,7 +13,7 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { generateId } from "../../util";
 
-import { HelpItem } from "../help-enabler/HelpItem";
+import { HelpItem } from "ui-shared";
 import { KeyValueType } from "../key-value-form/key-value-convert";
 import type { ComponentProps } from "./components";
 import { convertToName } from "./DynamicComponents";
@@ -84,11 +84,11 @@ export const MapComponent = ({ name, label, helpText }: ComponentProps) => {
           <Flex key={attribute.id} data-testid="row">
             <FlexItem grow={{ default: "grow" }}>
               <TextInput
-                name={`${fieldName}[${index}].key`}
+                name={`${fieldName}.${index}.key`}
                 placeholder={t("common:keyPlaceholder")}
                 aria-label={t("key")}
                 defaultValue={attribute.key}
-                data-testid={`${fieldName}[${index}].key`}
+                data-testid={`${fieldName}.${index}.key`}
                 onChange={(value) => updateKey(index, value)}
                 onBlur={() => update()}
               />
@@ -98,11 +98,11 @@ export const MapComponent = ({ name, label, helpText }: ComponentProps) => {
               spacer={{ default: "spacerNone" }}
             >
               <TextInput
-                name={`${fieldName}[${index}].value`}
+                name={`${fieldName}.${index}.value`}
                 placeholder={t("common:valuePlaceholder")}
                 aria-label={t("common:value")}
                 defaultValue={attribute.value}
-                data-testid={`${fieldName}[${index}].value`}
+                data-testid={`${fieldName}.${index}.value`}
                 onChange={(value) => updateValue(index, value)}
                 onBlur={() => update()}
               />
@@ -113,7 +113,7 @@ export const MapComponent = ({ name, label, helpText }: ComponentProps) => {
                 title={t("common:removeAttribute")}
                 isDisabled={map.length === 1}
                 onClick={() => remove(index)}
-                data-testid={`${fieldName}[${index}].remove`}
+                data-testid={`${fieldName}.${index}.remove`}
               >
                 <MinusCircleIcon />
               </Button>
