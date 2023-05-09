@@ -1,25 +1,29 @@
 import { lazy } from "react";
 import type { Path } from "react-router-dom";
 import { generatePath } from "react-router-dom";
-import type { RouteDef } from "../../route-config";
+import type { AppRouteObject } from "../../routes";
 
 export type DashboardTab = "info" | "providers";
 
 export type DashboardParams = { realm?: string; tab?: DashboardTab };
 
-export const DashboardRoute: RouteDef = {
+const Dashboard = lazy(() => import("../Dashboard"));
+
+export const DashboardRoute: AppRouteObject = {
   path: "/",
-  component: lazy(() => import("../Dashboard")),
+  element: <Dashboard />,
   breadcrumb: (t) => t("common:home"),
-  access: "anyone",
+  handle: {
+    access: "anyone",
+  },
 };
 
-export const DashboardRouteWithRealm: RouteDef = {
+export const DashboardRouteWithRealm: AppRouteObject = {
   ...DashboardRoute,
   path: "/:realm",
 };
 
-export const DashboardRouteWithTab: RouteDef = {
+export const DashboardRouteWithTab: AppRouteObject = {
   ...DashboardRoute,
   path: "/:realm/:tab",
 };
